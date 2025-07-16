@@ -1,65 +1,64 @@
-# Recommended C style and coding rules
+# 推荐的C语言风格和编码规则
 
-This document describes C code style used by Tilen MAJERLE in his projects and libraries.
+本文档描述了Tilen MAJERLE在其项目和库中使用的C代码风格。
 
-## Table of Contents
+## 目录
 
-- [Recommended C style and coding rules](#recommended-c-style-and-coding-rules)
-  - [Table of Contents](#table-of-contents)
-  - [The single most important rule](#the-single-most-important-rule)
-  - [Integration with VSCode](#integration-with-vscode)
-  - [Conventions used](#conventions-used)
-  - [General rules](#general-rules)
-  - [Comments](#comments)
-  - [Functions](#functions)
-  - [Variables](#variables)
-  - [Structures, enumerations, typedefs](#structures-enumerations-typedefs)
-  - [Compound statements](#compound-statements)
-    - [Switch statement](#switch-statement)
-  - [Macros and preprocessor directives](#macros-and-preprocessor-directives)
-  - [Documentation](#documentation)
-  - [Header/source files](#headersource-files)
-  - [Clang format integration](#clang-format-integration)
-  - [Artistic style configuration](#artistic-style-configuration)
-  - [Eclipse formatter](#eclipse-formatter)
+- [推荐的C语言风格和编码规则](#推荐的c语言风格和编码规则)
+  - [目录](#目录)
+  - [最重要的规则](#最重要的规则)
+  - [与VSCode集成](#与vscode集成)
+  - [使用的约定](#使用的约定)
+  - [通用规则](#通用规则)
+  - [注释](#注释)
+  - [函数](#函数)
+  - [变量](#变量)
+  - [结构体、枚举、类型定义](#结构体枚举类型定义)
+  - [复合语句](#复合语句)
+    - [Switch语句](#switch语句)
+  - [宏和预处理器指令](#宏和预处理器指令)
+  - [文档](#文档)
+  - [头文件/源文件](#头文件源文件)
+  - [Clang格式集成](#clang格式集成)
+  - [艺术风格配置](#艺术风格配置)
+  - [Eclipse格式化器](#eclipse格式化器)
 
-## The single most important rule
+## 最重要的规则
 
-Let's start with the quote from [GNOME developer](https://developer.gnome.org/documentation/guidelines/programming/coding-style.html) site.
+让我们从[GNOME开发者](https://developer.gnome.org/documentation/guidelines/programming/coding-style.html)网站的引言开始。
 
-> The single most important rule when writing code is this: *check the surrounding code and try to imitate it*.
+> 编写代码时最重要的规则是：*检查周围的代码并尝试模仿它*。
 >
-> As a maintainer it is dismaying to receive a patch that is obviously in a different coding style to the surrounding code. This is disrespectful, like someone tromping into a spotlessly-clean house with muddy shoes.
+> 作为维护者，收到与周围代码明显不同编码风格的补丁是令人沮丧的。这是不尊重的行为，就像有人穿着泥泞的鞋子踏进一间一尘不染的房子。
 >
-> So, whatever this document recommends, if there is already written code and you are patching it, keep its current style consistent even if it is not your favorite style.
+> 所以，无论本文档推荐什么，如果已经有编写好的代码而你正在对其进行补丁，即使这不是你最喜欢的风格，也要保持其当前风格的一致性。
 
-## Integration with VSCode
+## 与VSCode集成
 
-VScode comes with pre-installed `clang-format` tool (part of LLVM package) that has been design to help developers with auto-format tool during code development.
+VScode预装了`clang-format`工具（LLVM包的一部分），它旨在帮助开发人员在代码开发过程中使用自动格式化工具。
 
-As such, it allows users to format code on file change (and save).
-When file is saved, vscode will try to invoke the clang-format and format the code. Rules to use are in `.clang-format` file. If clang-format cannot find the rules in the path of current file, it will go all the way up to the root, until one is found. If still none is available, default rules are then being used.
+因此，它允许用户在文件更改（和保存）时格式化代码。
+当文件保存时，vscode将尝试调用clang-format并格式化代码。要使用的规则在`.clang-format`文件中。如果clang-format在当前文件的路径中找不到规则，它将一直向上到根目录，直到找到一个。如果仍然没有可用的，则使用默认规则。
 
-This repository contains always up-to-date `.clang-format` file with rules matching explained ones.
-You can place the folder in the root or your project or even in the root of your software development projects -> use one file for all!
+此存储库包含始终最新的`.clang-format`文件，其规则与所解释的规则匹配。
+您可以将文件夹放在项目的根目录或甚至软件开发项目的根目录中 -> 为所有项目使用一个文件！
 
-Some configurations shall be enabled:
-![VSCode configuration](images/vscode-settings.png) 
+需要启用一些配置：
+![VSCode配置](images/vscode-settings.png) 
 
-## Conventions used
+## 使用的约定
 
-The keywords *MUST*, *MUST NOT*, *REQUIRED*, *SHALL*, *SHALL NOT*, *SHOULD*, *SHOULD NOT*, *RECOMMENDED*, *NOT RECOMMENDED*, *MAY*, and
-   *OPTIONAL* in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174]
+本文档中的关键词*必须*（MUST）、*不得*（MUST NOT）、*要求*（REQUIRED）、*应当*（SHALL）、*不应当*（SHALL NOT）、*应该*（SHOULD）、*不应该*（SHOULD NOT）、*推荐*（RECOMMENDED）、*不推荐*（NOT RECOMMENDED）、*可以*（MAY）和*可选*（OPTIONAL）应按照BCP 14 [RFC2119] [RFC8174]中描述的方式解释。
 
-## General rules
+## 通用规则
 
-Here are listed most obvious and important general rules. Please check them carefully before you continue with other chapters.
+这里列出了最明显和重要的通用规则。在继续其他章节之前，请仔细检查它们。
 
-- `clang-format` SHOULD be used with formatting file attached to this repository (version `15.x` is a minimum)
-- Use `C11` standard
-- Do not use tabs, use spaces instead
-- Use `4` spaces per indent level
-- Use `1` space between keyword and opening bracket
+- `clang-format` 应该与附在此存储库的格式化文件一起使用（最低版本`15.x`）
+- 使用`C11`标准
+- 不要使用制表符，使用空格代替
+- 每个缩进级别使用`4`个空格
+- 关键词和开括号之间使用`1`个空格
 ```c
 /* OK */
 if (condition)
@@ -74,17 +73,17 @@ for(init;condition;step)
 do {} while(condition)
 ```
 
-- Do not use space between function name and opening bracket
+- 函数名和开括号之间不要使用空格
 ```c
 int32_t a = sum(4, 3);              /* OK */
 int32_t a = sum (4, 3);             /* Wrong */
 ```
 
-- Never use `__` or `_` prefix for variables/functions/macros/types. This is reserved for C language itself
-    - Prefer `prv_` name prefix for strictly module-private (static) functions
-    - Prefer `libname_int_` or `libnamei_` prefix for library internal functions, that should not be used by the user application while they MUST be used across different library internal modules
-- Use only lowercase characters for variables/functions/types with optional underscore `_` char
-- Opening curly bracket is always at the same line as keyword (`for`, `while`, `do`, `switch`, `if`, ...)
+- 永远不要在变量/函数/宏/类型前使用`__`或`_`前缀。这是为C语言本身保留的
+    - 对于严格的模块私有（静态）函数，推荐使用`prv_`名称前缀
+    - 对于库内部函数，推荐使用`libname_int_`或`libnamei_`前缀，这些函数不应该被用户应用程序使用，但必须在不同的库内部模块中使用
+- 变量/函数/类型只使用小写字符，可选地使用下划线`_`字符
+- 开花括号总是与关键词（`for`、`while`、`do`、`switch`、`if`等）在同一行
 ```c
 size_t i;
 for (i = 0; i < 5; ++i) {           /* OK */
@@ -96,7 +95,7 @@ for (i = 0; i < 5; ++i)             /* Wrong */
 }
 ```
 
-- Use single space before and after comparison and assignment operators
+- 比较和赋值运算符前后使用单个空格
 ```c
 int32_t a;
 a = 3 + 4;              /* OK */
@@ -106,29 +105,27 @@ a = 3+4;                /* Wrong */
 for (a=0;a<5;++a)       /* Wrong */
 ```
 
-- Use single space after every comma
+- 每个逗号后使用单个空格
 ```c
 func_name(5, 4);        /* OK */
 func_name(4,3);         /* Wrong */
 ```
 
-- Do not initialize `global` variables to any default value (or `NULL`), implement it in the dedicated `init` function (if REQUIRED).
+- 不要将`全局`变量初始化为任何默认值（或`NULL`），在专用的`init`函数中实现它（如果需要）。
 ```c
 static int32_t a;       /* Wrong */
 static int32_t b = 4;   /* Wrong */
 static int32_t a = 0;   /* Wrong */
 ```
-> In embedded systems, it is very common that RAM memories are scattered across different memory locations in the system.
-> It quickly becomes tricky to handle all the cases, especially when user declares custom RAM sections.
-> Startup script is in-charge to set default values (.data and .bss) while other custom sections may not be filled with default values, which leads to variables with init value won't have any effect.
+> 在嵌入式系统中，RAM内存分布在系统的不同内存位置是很常见的。
+> 当用户声明自定义RAM段时，处理所有情况很快就会变得棘手。
+> 启动脚本负责设置默认值（.data和.bss），而其他自定义段可能不会填充默认值，这导致带有初始值的变量不会有任何效果。
 >
-> To be independent of such problem, create init function for each module and use it to set
-> default values for all of your variables, like so:
+> 为了独立于这种问题，为每个模块创建init函数并使用它来为所有变量设置默认值，如下所示：
 
 ```c
 static int32_t a;       /* OK */
-static int32_t b = 4;   /* Wrong - this value may not be set at zero 
-                            if linker script&startup files are not properly handled */
+static int32_t b = 4;   /* Wrong - 如果链接器脚本和启动文件没有正确处理，这个值可能不会设置为零 */
 
 void
 my_module_init(void) {
@@ -137,7 +134,7 @@ my_module_init(void) {
 }
 ```
 
-- Declare all local variables of the same type in the same line
+- 在同一行中声明所有相同类型的局部变量
 ```c
 void
 my_func(void) {
@@ -149,20 +146,20 @@ my_func(void) {
     
     /* 3 */
     char a;
-    char b;             /* Wrong, variable with char type already exists */
+    char b;             /* Wrong, char类型的变量已经存在 */
 }
 ```
 
-- Declare local variables in order
-    1. Custom structures and enumerations
-    2. Integer types, wider unsigned type first
-    3. Single/Double floating point
+- 按顺序声明局部变量
+    1. 自定义结构和枚举
+    2. 整数类型，更宽的无符号类型优先
+    3. 单/双精度浮点数
 ```c
 int
 my_func(void) {
     /* 1 */
-    my_struct_t my;     /* First custom structures */
-    my_struct_ptr_t* p; /* Pointers too */
+    my_struct_t my;     /* 首先是自定义结构 */
+    my_struct_ptr_t* p; /* 指针也是 */
 
     /* 2 */
     uint32_t a;
@@ -178,8 +175,8 @@ my_func(void) {
 }
 ```
 
-- Always declare local variables at the beginning of the block, before first executable statement
-- Always add trailing comma in the last element of structure (or its children) initialization (this helps clang-format to properly format structures). Unless structure is very simple and short
+- 总是在块的开始，第一个可执行语句之前声明局部变量
+- 在结构（或其子级）初始化的最后一个元素中总是添加尾逗号（这有助于clang-format正确格式化结构）。除非结构非常简单和简短
 ```c
 typedef struct {
     int a, b;
@@ -187,10 +184,10 @@ typedef struct {
 
 str_t s = {
     .a = 1,
-    .b = 2,   /* Comma here */
+    .b = 2,   /* 这里的逗号 */
 }
 
-/* Examples of "complex" structure, with or with missing several trailing commas, after clang-format runs the formatting */
+/* "复杂"结构的示例，有或缺少几个尾逗号，在clang-format运行格式化后 */
 static const my_struct_t my_var_1 = {
     .type = TYPE1,
     .type_data =
@@ -198,9 +195,9 @@ static const my_struct_t my_var_1 = {
             .type1 =
                 {
                     .par1 = 0,
-                    .par2 = 1, /* Trailing comma here */
-                }, /* Trailing comma here */
-        },  /* Trailing comma here */
+                    .par2 = 1, /* 这里的尾逗号 */
+                }, /* 这里的尾逗号 */
+        },  /* 这里的尾逗号 */
 };
 
 static const my_struct_t my_var_2 = {.type = TYPE2,
@@ -210,23 +207,23 @@ static const my_struct_t my_var_2 = {.type = TYPE2,
                                                  .par1 = 0,
                                                  .par2 = 1,
                                              },
-                                     }};    /* Missing comma here */
+                                     }};    /* 这里缺少逗号 */
 static const my_struct_t my_var_3 = {.type = TYPE3,
                                      .type_data = {.type3 = {
                                                        .par1 = 0,
                                                        .par2 = 1,
-                                                   }}}; /* Missing 2 commas here */
+                                                   }}}; /* 这里缺少2个逗号 */
 
-/* No trailing commas - good only for small and simple structures */
+/* 没有尾逗号 - 仅适用于小型和简单的结构 */
 static const my_struct_t my_var_4 = {.type = TYPE4, .type_data = {.type4 = {.par1 = 0, .par2 = 1}}};
 ```
 
-- Declare counter variables in `for` loop
+- 在`for`循环中声明计数器变量
 ```c
 /* OK */
 for (size_t i = 0; i < 10; ++i)
 
-/* OK, if you need counter variable later */
+/* OK，如果你以后需要计数器变量 */
 size_t i;
 for (i = 0; i < 10; ++i) {
     if (...) {
@@ -242,24 +239,24 @@ size_t i;
 for (i = 0; i < 10; ++i) ...
 ```
 
-- Avoid variable assignment with function call in declaration, except for single variables
+- 避免在声明中使用函数调用进行变量赋值，除了单个变量
 ```c
 void
 a(void) {
-    /* Avoid function calls when declaring variable */
+    /* 声明变量时避免函数调用 */
     int32_t a, b = sum(1, 2);
 
-    /* Use this */
+    /* 使用这个 */
     int32_t a, b;
     b = sum(1, 2);
 
-    /* This is ok */
+    /* 这样是可以的 */
     uint8_t a = 3, b = 4;
 }
 ```
 
-- Except `char`, `float` or `double`, always use types declared in `stdint.h` library, eg. `uint8_t` for `unsigned 8-bit`, etc.
-- Do not use `stdbool.h` library. Use `1` or `0` for `true` or `false` respectively
+- 除了`char`、`float`或`double`，总是使用在`stdint.h`库中声明的类型，例如`uint8_t`表示`无符号8位`等。
+- 不要使用`stdbool.h`库。分别使用`1`或`0`表示`true`或`false`
 ```c
 /* OK */
 uint8_t status;
@@ -270,14 +267,14 @@ status = 0;
 bool status = true;
 ```
 
-- Never compare against `true`, eg. `if (check_func() == 1)`, use `if (check_func()) { ... }`
-- Always compare pointers against `NULL` value
+- 永远不要与`true`比较，例如`if (check_func() == 1)`，使用`if (check_func()) { ... }`
+- 总是将指针与`NULL`值比较
 ```c
 void* ptr;
 
 /* ... */
 
-/* OK, compare against NULL */
+/* OK，与NULL比较 */
 if (ptr == NULL || ptr != NULL) {
 
 }
@@ -288,7 +285,7 @@ if (ptr || !ptr) {
 }
 ```
 
-- Always use *pre-increment (and decrement respectively)* instead of *post-increment (and decrement respectively)*
+- 总是使用*前置递增（和递减）*而不是*后置递增（和递减）*
 ```c
 int32_t a = 0;
 ...
@@ -299,121 +296,121 @@ a++;            /* Wrong */
 for (size_t j = 0; j < 10; ++j) {}  /* OK */
 ```
 
-- Always use `size_t` for length or size variables
-- Always use `const` for pointer if function should not modify memory pointed to by `pointer`
-- Always use `const` for function parameter or variable, if it should not be modified
+- 总是对长度或大小变量使用`size_t`
+- 如果函数不应该修改`指针`指向的内存，总是对指针使用`const`
+- 如果函数参数或变量不应该被修改，总是使用`const`
 ```c
 
-/* When d could be modified, data pointed to by d could not be modified */
+/* 当d可以被修改时，d指向的数据不能被修改 */
 void
 my_func(const void* d) {
 
 }
 
-/* When d and data pointed to by d both could not be modified */
+/* 当d和d指向的数据都不能被修改时 */
 void
 my_func(const void* const d) {
 
 }
 
-/* Not REQUIRED, it is advised */
+/* 不是必需的，但建议 */
 void
 my_func(const size_t len) {
 
 }
 
-/* When d should not be modified inside function, only data pointed to by d could be modified */
+/* 当d不应该在函数内部被修改时，只有d指向的数据可以被修改 */
 void
 my_func(void* const d) {
 
 }
 ```
 
-- When function may accept pointer of any type, always use `void *`, do not use `uint8_t *`
-    - Function MUST take care of proper casting in implementation
+- 当函数可能接受任何类型的指针时，总是使用`void *`，不要使用`uint8_t *`
+    - 函数必须在实现中处理适当的类型转换
 ```c
 /*
- * To send data, function should not modify memory pointed to by `data` variable
- * thus `const` keyword is important
+ * 为了发送数据，函数不应该修改`data`变量指向的内存
+ * 因此`const`关键词很重要
  *
- * To send generic data (or to write them to file)
- * any type may be passed for data,
- * thus use `void *`
+ * 为了发送通用数据（或将它们写入文件）
+ * 任何类型都可以作为数据传递，
+ * 因此使用`void *`
  */
-/* OK example */
+/* OK示例 */
 void
 send_data(const void* data, size_t len) { /* OK */
-    /* Do not cast `void *` or `const void *` */
-    const uint8_t* d = data;/* Function handles proper type for internal usage */
+    /* 不要转换`void *`或`const void *` */
+    const uint8_t* d = data;/* 函数处理内部使用的适当类型 */
 }
 
 void
-send_data(const void* data, int len) {    /* Wrong, not not use int */
+send_data(const void* data, int len) {    /* Wrong，不要使用int */
 }
 ```
 
-- Always use brackets with `sizeof` operator
-- Never use *Variable Length Array* (VLA). Use dynamic memory allocation instead with standard C `malloc` and `free` functions or if library/project provides custom memory allocation, use its implementation
-    - Take a look at [LwMEM](https://github.com/MaJerle/lwmem), custom memory management library
+- 总是对`sizeof`运算符使用括号
+- 永远不要使用*变长数组*（VLA）。使用标准C`malloc`和`free`函数的动态内存分配，或者如果库/项目提供自定义内存分配，使用其实现
+    - 查看[LwMEM](https://github.com/MaJerle/lwmem)，自定义内存管理库
 ```c
 /* OK */
 #include <stdlib.h>
 void
 my_func(size_t size) {
     int32_t* arr;
-    arr = malloc(sizeof(*arr) * n); /* OK, Allocate memory */
-    arr = malloc(sizeof *arr * n);  /* Wrong, brackets for sizeof operator are missing */
+    arr = malloc(sizeof(*arr) * n); /* OK，分配内存 */
+    arr = malloc(sizeof *arr * n);  /* Wrong，sizeof运算符缺少括号 */
     if (arr == NULL) {
-        /* FAIL, no memory */
+        /* FAIL，没有内存 */
     }
 
-    free(arr);  /* Free memory after usage */
+    free(arr);  /* 使用后释放内存 */
 }
 
 /* Wrong */
 void
 my_func(size_t size) {
-    int32_t arr[size];  /* Wrong, do not use VLA */
+    int32_t arr[size];  /* Wrong，不要使用VLA */
 }
 ```
 
-- Always compare variable against zero, except if it is treated as `boolean` type
-- Never compare `boolean-treated` variables against zero or one. Use NOT (`!`) instead
+- 总是将变量与零比较，除非它被视为`布尔`类型
+- 永远不要将`布尔处理`变量与零或一比较。使用NOT（`!`）代替
 ```c
-size_t length = 5;  /* Counter variable */
-uint8_t is_ok = 0;  /* Boolean-treated variable */
-if (length)         /* Wrong, length is not treated as boolean */
-if (length > 0)     /* OK, length is treated as counter variable containing multi values, not only 0 or 1 */
-if (length == 0)    /* OK, length is treated as counter variable containing multi values, not only 0 or 1 */
+size_t length = 5;  /* 计数器变量 */
+uint8_t is_ok = 0;  /* 布尔处理变量 */
+if (length)         /* Wrong，length不被视为布尔值 */
+if (length > 0)     /* OK，length被视为包含多个值的计数器变量，不仅仅是0或1 */
+if (length == 0)    /* OK，length被视为包含多个值的计数器变量，不仅仅是0或1 */
 
-if (is_ok)          /* OK, variable is treated as boolean */
-if (!is_ok)         /* OK, -||- */
-if (is_ok == 1)     /* Wrong, never compare boolean variable against 1! */
-if (is_ok == 0)     /* Wrong, use ! for negative check */
+if (is_ok)          /* OK，变量被视为布尔值 */
+if (!is_ok)         /* OK，-||- */
+if (is_ok == 1)     /* Wrong，永远不要将布尔变量与1比较！ */
+if (is_ok == 0)     /* Wrong，使用!进行负检查 */
 ```
 
-- Always use `/* comment */` for comments, even for *single-line* comment
-- Always include check for `C++` with `extern` keyword in header file
-- Every function MUST include *doxygen-enabled* comment, even if function is `static`
-- Use English names/text for functions, variables, comments
-- Use *lowercase* characters for variables
-- Use *underscore* if variable contains multiple names, eg. `force_redraw`. Do not use `forceRedraw`
-- Never cast function returning `void *`, eg. `uint8_t* ptr = (uint8_t *)func_returning_void_ptr();` as `void *` is safely promoted to any other pointer type
-    - Use `uint8_t* ptr = func_returning_void_ptr();` instead
-- Always use `<` and `>` for C Standard Library include files, eg. `#include <stdlib.h>`
-- Always use `""` for custom libraries, eg. `#include "my_library.h"`
-- When casting to pointer type, always align asterisk to type, eg. `uint8_t* t = (uint8_t*)var_width_diff_type`
-- Always respect code style already used in project or library
+- 总是使用`/* comment */`进行注释，即使是*单行*注释
+- 在头文件中总是包括`C++`的`extern`关键词检查
+- 每个函数必须包括*doxygen启用*的注释，即使函数是`static`
+- 对函数、变量、注释使用英文名称/文本
+- 变量使用*小写*字符
+- 如果变量包含多个名称，使用*下划线*，例如`force_redraw`。不要使用`forceRedraw`
+- 永远不要转换返回`void *`的函数，例如`uint8_t* ptr = (uint8_t *)func_returning_void_ptr();`，因为`void *`可以安全地提升为任何其他指针类型
+    - 使用`uint8_t* ptr = func_returning_void_ptr();`代替
+- 对于C标准库包含文件总是使用`<`和`>`，例如`#include <stdlib.h>`
+- 对于自定义库总是使用`""`，例如`#include "my_library.h"`
+- 当转换为指针类型时，总是将星号对齐到类型，例如`uint8_t* t = (uint8_t*)var_width_diff_type`
+- 总是尊重项目或库中已经使用的代码风格
 
-## Comments
+## 注释
 
-- Comments starting with `//` are not allowed. Always use `/* comment */`, even for single-line comment
+- 不允许以`//`开头的注释。总是使用`/* comment */`，即使是单行注释
 ```c
 //This is comment (wrong)
 /* This is comment (ok) */
 ```
 
-- For multi-line comments use `space+asterisk` for every line
+- 对于多行注释，每行使用`空格+星号`
 ```c
 /*
  * This is multi-line comments,
@@ -435,21 +432,21 @@ if (is_ok == 0)     /* Wrong, use ! for negative check */
 /* Single line comment (ok) */
 ```
 
-- Use `12` indents (`12 * 4` spaces) offset when commenting. If statement is larger than `12` indents, make comment `4-spaces` aligned (examples below) to next available indent
+- 注释时使用`12`个缩进（`12 * 4`个空格）偏移。如果语句大于`12`个缩进，使注释`4-空格`对齐（下面的示例）到下一个可用缩进
 ```c
 void
 my_func(void) {
     char a, b;
 
-    a = call_func_returning_char_a(a);          /* This is comment with 12*4 spaces indent from beginning of line */
-    b = call_func_returning_char_a_but_func_name_is_very_long(a);   /* This is comment, aligned to 4-spaces indent */
+    a = call_func_returning_char_a(a);          /* 这是从行开始有12*4个空格缩进的注释 */
+    b = call_func_returning_char_a_but_func_name_is_very_long(a);   /* 这是注释，对齐到4-空格缩进 */
 }
 ```
 
-## Functions
+## 函数
 
-- Every function which may have access from outside its module, MUST include function *prototype* (or *declaration*)
-- Function name MUST be lowercase, optionally separated with underscore `_` character
+- 每个可能从其模块外部访问的函数，必须包括函数*原型*（或*声明*）
+- 函数名必须是小写，可选地用下划线`_`字符分隔
 ```c
 /* OK */
 void my_func(void);
@@ -460,7 +457,7 @@ void MYFunc(void);
 void myFunc();
 ```
 
-- When function returns pointer, align asterisk to return type
+- 当函数返回指针时，将星号对齐到返回类型
 ```c
 /* OK */
 const char* my_func(void);
@@ -470,9 +467,9 @@ my_struct_t* my_func(int32_t a, int32_t b);
 const char *my_func(void);
 my_struct_t * my_func(void);
 ```
-- Align all function prototypes (with the same/similar functionality) for better readability
+- 对齐所有函数原型（具有相同/相似功能）以提高可读性
 ```c
-/* OK, function names aligned */
+/* OK，函数名对齐 */
 void        set(int32_t a);
 my_type_t   get(void);
 my_ptr_t*   get_ptr(void);
@@ -482,7 +479,7 @@ void set(int32_t a);
 const char * get(void);
 ```
 
-- Function implementation MUST include return type and optional other keywords in separate line
+- 函数实现必须在单独的行中包括返回类型和可选的其他关键词
 ```c
 /* OK */
 int32_t
@@ -502,9 +499,9 @@ int32_t foo(void) {
 }
 ```
 
-## Variables
+## 变量
 
-- Make variable name all lowercase with optional underscore `_` character
+- 使变量名全部小写，可选使用下划线`_`字符
 ```c
 /* OK */
 int32_t a;
@@ -517,38 +514,38 @@ int32_t myVar;
 int32_t MYVar;
 ```
 
-- Group local variables together by `type`
+- 按`类型`将局部变量分组在一起
 ```c
 void
 foo(void) {
     int32_t a, b;   /* OK */
     char a;
-    char b;         /* Wrong, char type already exists */
+    char b;         /* Wrong，char类型已经存在 */
 }
 ```
 
-- Do not declare variable after first executable statement
+- 不要在第一个可执行语句后声明变量
 ```c
 void
 foo(void) {
     int32_t a;
     a = bar();
-    int32_t b;      /* Wrong, there is already executable statement */
+    int32_t b;      /* Wrong，已经有可执行语句 */
 }
 ```
 
-- You may declare new variables inside next indent level
+- 你可以在下一个缩进级别内声明新变量
 ```c
 int32_t a, b;
 a = foo();
 if (a) {
-    int32_t c, d;   /* OK, c and d are in if-statement scope */
+    int32_t c, d;   /* OK，c和d在if语句作用域内 */
     c = foo();
-    int32_t e;      /* Wrong, there was already executable statement inside block */
+    int32_t e;      /* Wrong，块内已经有可执行语句 */
 }
 ```
 
-- Declare pointer variables with asterisk aligned to type
+- 声明指针变量时将星号对齐到类型
 ```c
 /* OK */
 char* a;
@@ -558,73 +555,73 @@ char *a;
 char * a;
 ```
 
-- When declaring multiple pointer variables, you may declare them with asterisk aligned to variable name
+- 当声明多个指针变量时，你可以将它们声明为星号对齐到变量名
 ```c
 /* OK */
 char *p, *n;
 ```
 
-## Structures, enumerations, typedefs
+## 结构体、枚举、类型定义
 
-- Structure or enumeration name MUST be lowercase with optional underscore `_` character between words
-- Structure or enumeration may contain `typedef` keyword
-- All structure members MUST be lowercase
-- All enumeration members SHOULD be uppercase
-- Structure/enumeration MUST follow doxygen documentation syntax
+- 结构或枚举名必须是小写，单词之间可选使用下划线`_`字符
+- 结构或枚举可能包含`typedef`关键词
+- 所有结构成员必须是小写
+- 所有枚举成员应该是大写
+- 结构/枚举必须遵循doxygen文档语法
 
-When structure is declared, it may use one of `3` different options:
+当声明结构时，它可以使用`3`种不同选项之一：
 
-1. When structure is declared with *name only*, it *MUST not* contain `_t` suffix after its name.
+1. 当结构仅用*名称*声明时，它*不得*在其名称后包含`_t`后缀。
 ```c
 struct struct_name {
     char* a;
     char b;
 };
 ```
-2. When structure is declared with *typedef only*, it *has to* contain `_t` suffix after its name.
+2. 当结构仅用*typedef*声明时，它*必须*在其名称后包含`_t`后缀。
 ```c
 typedef struct {
     char* a;
     char b;
 } struct_name_t;
 ```
-3. When structure is declared with *name and typedef*, it *MUST NOT* contain `_t` for basic name and it *MUST* contain `_t` suffix after its name for typedef part.
+3. 当结构用*名称和typedef*声明时，它*不得*为基本名称包含`_t`，并且*必须*为typedef部分在其名称后包含`_t`后缀。
 ```c
-typedef struct struct_name {    /* No _t */
+typedef struct struct_name {    /* 没有_t */
     char* a;
     char b;
     char c;
 } struct_name_t;    /* _t */
 ```
 
-Examples of bad declarations and their suggested corrections
+错误声明的示例及其建议的更正
 ```c
-/* a and b MUST be separated to 2 lines */
-/* Name of structure with typedef MUST include _t suffix */
+/* a和b必须分为2行 */
+/* 带有typedef的结构名必须包含_t后缀 */
 typedef struct {
     int32_t a, b;
 } a;
 
-/* Corrected version */
+/* 更正版本 */
 typedef struct {
     int32_t a;
     int32_t b;
 } a_t;
 
-/* Wrong name, it MUST not include _t suffix */
+/* 错误的名称，不得包含_t后缀 */
 struct name_t {
     int32_t a;
     int32_t b;
 };
 
-/* Wrong parameters, MUST be all uppercase */
+/* 错误的参数，必须全部大写 */
 typedef enum {
     MY_ENUM_TESTA,
     my_enum_testb,
 } my_enum_t;
 ```
 
-- When initializing structure on declaration, use `C99` initialization style
+- 在声明时初始化结构时，使用`C99`初始化风格
 ```c
 /* OK */
 a_t a = {
@@ -636,17 +633,17 @@ a_t a = {
 a_t a = {1, 2};
 ```
 
-- When new typedef is introduced for function handles, use `_fn` suffix
+- 当为函数句柄引入新的typedef时，使用`_fn`后缀
 ```c
-/* Function accepts 2 parameters and returns uint8_t */
-/* Name of typedef has `_fn` suffix */
+/* 函数接受2个参数并返回uint8_t */
+/* typedef的名称有`_fn`后缀 */
 typedef uint8_t (*my_func_typedef_fn)(uint8_t p1, const char* p2);
 ```
 
-## Compound statements
+## 复合语句
 
-- Every compound statement MUST include opening and closing curly bracket, even if it includes only `1` nested statement
-- Every compound statement MUST include single indent; when nesting statements, include `1` indent size for each nest
+- 每个复合语句必须包括开花括号和闭花括号，即使它只包含`1`个嵌套语句
+- 每个复合语句必须包括单个缩进；当嵌套语句时，为每个嵌套包括`1`个缩进大小
 ```c
 /* OK */
 if (c) {
@@ -666,7 +663,7 @@ if (c) do_a();
 else do_b();
 ```
 
-- In case of `if` or `if-else-if` statement, `else` MUST be in the same line as closing bracket of first statement
+- 在`if`或`if-else-if`语句的情况下，`else`必须与第一个语句的闭括号在同一行
 ```c
 /* OK */
 if (a) {
@@ -695,7 +692,7 @@ else
 }
 ```
 
-- In case of `do-while` statement, `while` part MUST be in the same line as closing bracket of `do` part
+- 在`do-while`语句的情况下，`while`部分必须与`do`部分的闭括号在同一行
 ```c
 /* OK */
 do {
@@ -717,7 +714,7 @@ do {
 while (check());
 ```
 
-- Indentation is REQUIRED for every opening bracket
+- 每个开括号都需要缩进
 ```c
 if (a) {
     do_a();
@@ -729,7 +726,7 @@ if (a) {
 }
 ```
 
-- Compound statement MUST include curly brackets, even in the case of a single statement. Examples below show bad practices
+- 复合语句必须包括花括号，即使在单个语句的情况下。下面的示例显示了不良做法
 ```c
 if (a) do_b();
 else do_c();
@@ -737,7 +734,7 @@ else do_c();
 if (a) do_a(); else do_b();
 ```
 
-- Empty `while`, `do-while` or `for` loops MUST include brackets
+- 空的`while`、`do-while`或`for`循环必须包括括号
 ```c
 /* OK */
 while (is_register_bit_set()) {}
@@ -749,24 +746,24 @@ while (is_register_bit_set()) {
 }
 ```
 
-- If `while` (or `for`, `do-while`, etc) is empty (it can be the case in embedded programming), use empty single-line brackets
+- 如果`while`（或`for`、`do-while`等）是空的（在嵌入式编程中可能是这种情况），使用空的单行括号
 ```c
-/* Wait for bit to be set in embedded hardware unit */
+/* 在嵌入式硬件单元中等待位被设置 */
 volatile uint32_t* addr = HW_PERIPH_REGISTER_ADDR;
 
-/* Wait bit 13 to be ready */
-while (*addr & (1 << 13)) {}        /* OK, empty loop contains no spaces inside curly brackets */
+/* 等待位13准备好 */
+while (*addr & (1 << 13)) {}        /* OK，空循环在花括号内不包含空格 */
 while (*addr & (1 << 13)) { }       /* Wrong */
 while (*addr & (1 << 13)) {         /* Wrong */
 
 }
-while (*addr & (1 << 13));          /* Wrong, curly brackets are missing. Can lead to compiler warnings or unintentional bugs */
+while (*addr & (1 << 13));          /* Wrong，缺少花括号。可能导致编译器警告或意外错误 */
 ```
-- Always prefer using loops in this order: `for`, `do-while`, `while`
-- Avoid incrementing variables inside loop block if possible, see examples
+- 总是按此顺序优先使用循环：`for`、`do-while`、`while`
+- 如果可能，避免在循环块内递增变量，见示例
 
 ```c
-/* Not recommended */
+/* 不推荐 */
 int32_t a = 0;
 while (a < 10) {
     .
@@ -775,12 +772,12 @@ while (a < 10) {
     ++a;
 }
 
-/* Better */
+/* 更好 */
 for (size_t a = 0; a < 10; ++a) {
 
 }
 
-/* Better, if inc may not happen in every cycle */
+/* 更好，如果递增可能不在每个周期中发生 */
 for (size_t a = 0; a < 10; ) {
     if (...) {
         ++a;
@@ -788,17 +785,17 @@ for (size_t a = 0; a < 10; ) {
 }
 ```
 
-- Inline `if` statement MAY be used only for assignment or function call operations
+- 内联`if`语句可能仅用于赋值或函数调用操作
 ```c
 /* OK */
-int a = condition ? if_yes : if_no; /* Assignment */
-func_call(condition ? if_yes : if_no); /* Function call */
+int a = condition ? if_yes : if_no; /* 赋值 */
+func_call(condition ? if_yes : if_no); /* 函数调用 */
 switch (condition ? if_yes : if_no) {...}   /* OK */
 
-/* Wrong, this code is not well maintenable */
+/* Wrong，这代码不好维护 */
 condition ? call_to_function_a() : call_to_function_b();
 
-/* Rework to have better program flow */
+/* 重构以获得更好的程序流程 */
 if (condition) {
     call_to_function_a();
 } else {
@@ -806,13 +803,13 @@ if (condition) {
 }
 ```
 
-### Switch statement
+### Switch语句
 
-- Add *single indent* for every `case` statement
-- Use additional *single indent* for `break` statement in each `case` or `default` statement
+- 为每个`case`语句添加*单个缩进*
+- 在每个`case`或`default`语句中为`break`语句使用额外的*单个缩进*
 ```c
-/* OK, every case has single indent */
-/* OK, every break has additional indent */
+/* OK，每个case都有单个缩进 */
+/* OK，每个break都有额外的缩进 */
 switch (check()) {
     case 0:
         do_a();
@@ -824,7 +821,7 @@ switch (check()) {
         break;
 }
 
-/* Wrong, case indent missing */
+/* Wrong，case缩进缺失 */
 switch (check()) {
 case 0:
     do_a();
@@ -840,16 +837,16 @@ default:
 switch (check()) {
     case 0:
         do_a();
-    break;      /* Wrong, break MUST have indent as it is under case */
+    break;      /* Wrong，break必须有缩进，因为它在case下 */
     case 1:
-    do_b();     /* Wrong, indent under case is missing */
+    do_b();     /* Wrong，case下缺少缩进 */
     break;
     default:
         break;
 }
 ```
 
-- Always include `default` statement
+- 总是包括`default`语句
 ```c
 /* OK */
 switch (var) {
@@ -860,7 +857,7 @@ switch (var) {
         break;
 }
 
-/* Wrong, default is missing */
+/* Wrong，缺少default */
 switch (var) {
     case 0:
         do_job();
@@ -868,8 +865,8 @@ switch (var) {
 }
 ```
 
-- If local variables are REQUIRED, use curly brackets and put `break` statement inside.
-    - Put opening curly bracket in the same line as `case` statement
+- 如果需要局部变量，使用花括号并将`break`语句放在里面。
+    - 将开花括号与`case`语句放在同一行
 ```c
 switch (a) {
     /* OK */
@@ -888,7 +885,7 @@ switch (a) {
         break;
     }
 
-    /* Wrong, break shall be inside */
+    /* Wrong，break应该在里面 */
     case 2: {
         int32_t a;
     }
@@ -896,10 +893,10 @@ switch (a) {
 }
 ```
 
-## Macros and preprocessor directives
+## 宏和预处理器指令
 
-- Always use macros instead of literal constants, especially for numbers
-- All macros MUST be fully uppercase, with optional underscore `_` character, except if they are clearly marked as function which may be in the future replaced with regular function syntax
+- 总是使用宏而不是字面常数，特别是数字
+- 所有宏必须完全大写，可选使用下划线`_`字符，除非它们明确标记为函数，可能在将来用常规函数语法替换
 ```c
 /* OK */
 #define SQUARE(x)         ((x) * (x))
@@ -908,7 +905,7 @@ switch (a) {
 #define square(x)           ((x) * (x))
 ```
 
-- Always protect input parameters with parentheses
+- 总是用括号保护输入参数
 ```c
 /* OK */
 #define MIN(x, y)           ((x) < (y) ? (x) : (y))
@@ -917,51 +914,51 @@ switch (a) {
 #define MIN(x, y)           x < y ? x : y
 ```
 
-- Always protect final macro evaluation with parenthesis
+- 总是用括号保护最终宏求值
 ```c
 /* Wrong */
 #define MIN(x, y)           (x) < (y) ? (x) : (y)
 #define SUM(x, y)           (x) + (y)
 
-/* Imagine result of this equation using wrong SUM implementation */
-int32_t x = 5 * SUM(3, 4);  /* Expected result is 5 * 7 = 35 */
-int32_t x = 5 * (3) + (4);  /* It is evaluated to this, final result = 19 which is not what we expect */
+/* 想象使用错误的SUM实现这个方程的结果 */
+int32_t x = 5 * SUM(3, 4);  /* 期望结果是5 * 7 = 35 */
+int32_t x = 5 * (3) + (4);  /* 它被求值为这个，最终结果= 19，这不是我们期望的 */
 
-/* Correct implementation */
+/* 正确的实现 */
 #define MIN(x, y)           ((x) < (y) ? (x) : (y))
 #define SUM(x, y)           ((x) + (y))
 ```
 
-- When macro uses multiple statements, protect these using `do {} while (0)` statement
+- 当宏使用多个语句时，使用`do {} while (0)`语句保护这些语句
 ```c
 typedef struct {
     int32_t px, py;
 } point_t;
-point_t p;                  /* Define new point */
+point_t p;                  /* 定义新点 */
 
-/* Wrong implementation */
+/* 错误的实现 */
 
-/* Define macro to set point */
-#define SET_POINT(p, x, y)  (p)->px = (x); (p)->py = (y)    /* 2 statements. Last one should not implement semicolon */
+/* 定义宏来设置点 */
+#define SET_POINT(p, x, y)  (p)->px = (x); (p)->py = (y)    /* 2个语句。最后一个不应该实现分号 */
 
-SET_POINT(&p, 3, 4);        /* Set point to position 3, 4. This evaluates to... */
-(&p)->px = (3); (&p)->py = (4); /* ... to this. In this example this is not a problem. */
+SET_POINT(&p, 3, 4);        /* 将点设置为位置3, 4。这求值为... */
+(&p)->px = (3); (&p)->py = (4); /* ... 这个。在这个例子中这不是问题。 */
 
-/* Consider this ugly code, however it is valid by C standard (not recommended) */
-if (a)                      /* If a is true */
-    if (b)                  /* If b is true */
-        SET_POINT(&p, 3, 4);/* Set point to x = 3, y = 4 */
+/* 考虑这个丑陋的代码，但是它按C标准是有效的（不推荐） */
+if (a)                      /* 如果a为真 */
+    if (b)                  /* 如果b为真 */
+        SET_POINT(&p, 3, 4);/* 将点设置为x = 3, y = 4 */
     else
-        SET_POINT(&p, 5, 6);/* Set point to x = 5, y = 6 */
+        SET_POINT(&p, 5, 6);/* 将点设置为x = 5, y = 6 */
 
-/* Evaluates to code below. Do you see the problem? */
+/* 求值为下面的代码。你看到问题了吗？ */
 if (a)
     if (b)
         (&p)->px = (3); (&p)->py = (4);
     else
         (&p)->px = (5); (&p)->py = (6);
 
-/* Or if we rewrite it a little */
+/* 或者如果我们稍微重写它 */
 if (a)
     if (b)
         (&p)->px = (3);
@@ -971,138 +968,138 @@ if (a)
         (&p)->py = (6);
 
 /*
- * Ask yourself a question: To which `if` statement does the `else` keyword belong?
+ * 问自己一个问题：`else`关键词属于哪个`if`语句？
  *
- * Based on first part of code, answer is straight-forward. To inner `if` statement when we check `b` condition
- * Actual answer: Compilation error as `else` belongs nowhere
+ * 基于代码的第一部分，答案是直接的。当我们检查`b`条件时，属于内部`if`语句
+ * 实际答案：编译错误，因为`else`不属于任何地方
  */
 
-/* Better and correct implementation of macro */
-#define SET_POINT(p, x, y)  do { (p)->px = (x); (p)->py = (y); } while (0)    /* 2 statements. No semicolon after while loop */
-/* Or even better */
-#define SET_POINT(p, x, y)  do {    \   /* Backslash indicates statement continues in new line */
+/* 更好和正确的宏实现 */
+#define SET_POINT(p, x, y)  do { (p)->px = (x); (p)->py = (y); } while (0)    /* 2个语句。while循环后没有分号 */
+/* 或者更好 */
+#define SET_POINT(p, x, y)  do {    \   /* 反斜杠表示语句在新行中继续 */
     (p)->px = (x);                  \
     (p)->py = (y);                  \
-} while (0)                             /* 2 statements. No semicolon after while loop */
+} while (0)                             /* 2个语句。while循环后没有分号 */
 
-/* Now original code evaluates to */
+/* 现在原始代码求值为 */
 if (a)
     if (b)
         do { (&p)->px = (3); (&p)->py = (4); } while (0);
     else
         do { (&p)->px = (5); (&p)->py = (6); } while (0);
 
-/* Every part of `if` or `else` contains only `1` inner statement (do-while), hence this is valid evaluation */
+/* `if`或`else`的每个部分只包含`1`个内部语句（do-while），因此这是有效的求值 */
 
-/* To make code perfect, use brackets for every if-ifelse-else statements */
-if (a) {                    /* If a is true */
-    if (b) {                /* If b is true */
-        SET_POINT(&p, 3, 4);/* Set point to x = 3, y = 4 */
+/* 为了使代码完美，对每个if-ifelse-else语句使用括号 */
+if (a) {                    /* 如果a为真 */
+    if (b) {                /* 如果b为真 */
+        SET_POINT(&p, 3, 4);/* 将点设置为x = 3, y = 4 */
     } else {
-        SET_POINT(&p, 5, 6);/* Set point to x = 5, y = 6 */
+        SET_POINT(&p, 5, 6);/* 将点设置为x = 5, y = 6 */
     }
 }
 ```
 
-- Avoid using `#ifdef` or `#ifndef`. Use `defined()` or `!defined()` instead
+- 避免使用`#ifdef`或`#ifndef`。使用`defined()`或`!defined()`代替
 ```c
 #ifdef XYZ
 /* do something */
 #endif /* XYZ */
 ```
 
-- Always document `if/elif/else/endif` statements
+- 总是记录`if/elif/else/endif`语句
 ```c
 /* OK */
 #if defined(XYZ)
-/* Do if XYZ defined */
+/* 如果定义了XYZ就执行 */
 #else /* defined(XYZ) */
-/* Do if XYZ not defined */
+/* 如果没有定义XYZ就执行 */
 #endif /* !defined(XYZ) */
 
 /* Wrong */
 #if defined(XYZ)
-/* Do if XYZ defined */
+/* 如果定义了XYZ就执行 */
 #else
-/* Do if XYZ not defined */
+/* 如果没有定义XYZ就执行 */
 #endif
 ```
 
-- Do not indent sub statements inside `#if` statement
+- 不要在`#if`语句内缩进子语句
 ```c
 /* OK */
 #if defined(XYZ)
 #if defined(ABC)
-/* do when ABC defined */
+/* 当定义ABC时执行 */
 #endif /* defined(ABC) */
 #else /* defined(XYZ) */
-/* Do when XYZ not defined */
+/* 当没有定义XYZ时执行 */
 #endif /* !defined(XYZ) */
 
 /* Wrong */
 #if defined(XYZ)
     #if defined(ABC)
-        /* do when ABC defined */
+        /* 当定义ABC时执行 */
     #endif /* defined(ABC) */
 #else /* defined(XYZ) */
-    /* Do when XYZ not defined */
+    /* 当没有定义XYZ时执行 */
 #endif /* !defined(XYZ) */
 ```
 
-## Documentation
+## 文档
 
-Documented code allows doxygen to parse and generate html/pdf/latex output, thus it is very important to do it properly at an early stage of the project.
+文档化的代码允许doxygen解析并生成html/pdf/latex输出，因此在项目的早期阶段正确地做这件事是非常重要的。
 
-- Use doxygen-enabled documentation style for `variables`, `functions` and `structures/enumerations`
-- Always use `\` for doxygen, do not use `@`
-- Always use `5x4` spaces (`5` tabs) offset from beginning of line for text
+- 对`变量`、`函数`和`结构/枚举`使用doxygen启用的文档风格
+- 总是对doxygen使用`\`，不要使用`@`
+- 总是从行开始使用`5x4`个空格（`5`个制表符）偏移文本
 ```c
 /**
- * \brief           Holds pointer to first entry in linked list
- *                  Beginning of this text is 5 tabs (20 spaces) from beginning of line
+ * \brief           保存指向链表中第一个条目的指针
+ *                  此文本的开头距离行开头5个制表符（20个空格）
  */
 static
 type_t* list;
 ```
 
-- Every structure/enumeration member MUST include documentation
-- Align start of comments between different structure members to the same column
+- 每个结构/枚举成员必须包括文档
+- 将不同结构成员之间的注释开始对齐到同一列
 ```c
 /**
- * \brief           This is point struct
- * \note            This structure is used to calculate all point
- *                      related stuff
+ * \brief           这是点结构
+ * \note            此结构用于计算所有点
+ *                      相关的内容
  */
 typedef struct {
-    int32_t x;                                  /*!< Point X coordinate */
-    int32_t y;                                  /*!< Point Y coordinate */
-    int32_t size;                               /*!< Point size.
-                                                    Since comment is very big,
-                                                    you may go to next line */
+    int32_t x;                                  /*!< 点X坐标 */
+    int32_t y;                                  /*!< 点Y坐标 */
+    int32_t size;                               /*!< 点大小。
+                                                    由于注释非常大，
+                                                    你可以转到下一行 */
 } point_t;
 
 /**
- * \brief           Point color enumeration
+ * \brief           点颜色枚举
  */
 typedef enum {
-    COLOR_RED,                                  /*!< Red color */
-    COLOR_GREEN,                                /*!< Green color */
-    COLOR_BLUE,                                 /*!< Blue color */
+    COLOR_RED,                                  /*!< 红色 */
+    COLOR_GREEN,                                /*!< 绿色 */
+    COLOR_BLUE,                                 /*!< 蓝色 */
 } point_color_t;
 ```
 
-- Documentation for functions MUST be written in function implementation (source file usually)
-- Function MUST include `brief` and all parameters documentation
-- Every parameter MUST be noted if it is `in` or `out` for *input* and *output* respectively
-- Function MUST include `return` parameter if it returns something. This does not apply for `void` functions
-- Function can include other doxygen keywords, such as `note` or `warning`
-- Use colon `:` between parameter name and its description
+- 函数的文档必须写在函数实现中（通常是源文件）
+- 函数必须包括`brief`和所有参数文档
+- 每个参数必须注明它是*输入*和*输出*的`in`或`out`
+- 如果函数返回某些内容，函数必须包括`return`参数。这不适用于`void`函数
+- 函数可以包括其他doxygen关键词，如`note`或`warning`
+- 在参数名和其描述之间使用冒号`:`
 ```c
 /**
- * \brief           Sum `2` numbers
- * \param[in]       a: First number
- * \param[in]       b: Second number
- * \return          Sum of input values
+ * \brief           将`2`个数相加
+ * \param[in]       a: 第一个数
+ * \param[in]       b: 第二个数
+ * \return          输入值的和
  */
 int32_t
 sum(int32_t a, int32_t b) {
@@ -1110,11 +1107,11 @@ sum(int32_t a, int32_t b) {
 }
 
 /**
- * \brief           Sum `2` numbers and write it to pointer
- * \note            This function does not return value, it stores it to pointer instead
- * \param[in]       a: First number
- * \param[in]       b: Second number
- * \param[out]      result: Output variable used to save result
+ * \brief           将`2`个数相加并将其写入指针
+ * \note            此函数不返回值，而是将其存储到指针中
+ * \param[in]       a: 第一个数
+ * \param[in]       b: 第二个数
+ * \param[out]      result: 用于保存结果的输出变量
  */
 void
 void_sum(int32_t a, int32_t b, int32_t* result) {
@@ -1122,19 +1119,19 @@ void_sum(int32_t a, int32_t b, int32_t* result) {
 }
 ```
 
-- If function returns member of enumeration, use `ref` keyword to specify which one
+- 如果函数返回枚举的成员，使用`ref`关键词指定哪一个
 ```c
 /**
- * \brief           My enumeration
+ * \brief           我的枚举
  */
 typedef enum {
-    MY_ERR,                                     /*!< Error value */
-    MY_OK                                       /*!< OK value */
+    MY_ERR,                                     /*!< 错误值 */
+    MY_OK                                       /*!< OK值 */
 } my_enum_t;
 
 /**
- * \brief           Check some value
- * \return          \ref MY_OK on success, member of \ref my_enum_t otherwise
+ * \brief           检查某个值
+ * \return          成功时返回\ref MY_OK，否则返回\ref my_enum_t的成员
  */
 my_enum_t
 check_value(void) {
@@ -1142,12 +1139,12 @@ check_value(void) {
 }
 ```
 
-- Use notation (\`NULL\` => `NULL`) for constants or numbers
+- 对常数或数字使用符号（\`NULL\` => `NULL`）
 ```c
 /**
- * \brief           Get data from input array
- * \param[in]       in: Input data
- * \return          Pointer to output data on success, `NULL` otherwise
+ * \brief           从输入数组获取数据
+ * \param[in]       in: 输入数据
+ * \return          成功时返回指向输出数据的指针，否则返回`NULL`
  */
 const void *
 get_data(const void* in) {
@@ -1155,36 +1152,36 @@ get_data(const void* in) {
 }
 ```
 
-- Documentation for macros MUST include `hideinitializer` doxygen command
+- 宏的文档必须包括`hideinitializer` doxygen命令
 ```c
 /**
- * \brief           Get minimal value between `x` and `y`
- * \param[in]       x: First value
- * \param[in]       y: Second value
- * \return          Minimal value between `x` and `y`
+ * \brief           获取`x`和`y`之间的最小值
+ * \param[in]       x: 第一个值
+ * \param[in]       y: 第二个值
+ * \return          `x`和`y`之间的最小值
  * \hideinitializer
  */
 #define MIN(x, y)       ((x) < (y) ? (x) : (y))
 ```
 
-## Header/source files
+## 头文件/源文件
 
-- Leave single empty line at the end of file
-- Every file MUST include doxygen annotation for `file` and `brief` description followed by empty line (when using doxygen)
+- 在文件末尾留一个空行
+- 每个文件必须包括doxygen对`file`和`brief`描述的注释，后跟空行（当使用doxygen时）
 ```c
 /**
  * \file            template.h
- * \brief           Template include file
+ * \brief           模板包含文件
  */
-                    /* Here is empty line */
+                    /* 这里是空行 */
 ```
 
-- Every file (*header* or *source*) MUST include license (opening comment includes single asterisk as this MUST be ignored by doxygen)
-- Use the same license as already used by project/library
+- 每个文件（*头*文件或*源*文件）必须包括许可证（开头注释包括单个星号，因为这必须被doxygen忽略）
+- 使用与项目/库已经使用的相同许可证
 ```c
 /**
  * \file            template.h
- * \brief           Template include file
+ * \brief           模板包含文件
  */
 
 /*
@@ -1216,41 +1213,41 @@ get_data(const void* in) {
  */
 ```
 
-- Header file MUST include guard `#ifndef`
-- Header file MUST include `C++` check
-- Include external header files outside `C++` check
-- Include external header files with STL C files first followed by application custom files
-- Header file MUST include only every other header file in order to compile correctly, but not more (.c should include the rest if REQUIRED)
-- Header file MUST only expose module public variables/types/functions
-- Use `extern` for global module variables in header file, define them in source file later
+- 头文件必须包括保护`#ifndef`
+- 头文件必须包括`C++`检查
+- 在`C++`检查外包括外部头文件
+- 首先包括STL C文件的外部头文件，然后是应用程序自定义文件
+- 头文件必须只包括正确编译所需的每个其他头文件，但不能更多（.c应该包括剩余的，如果需要）
+- 头文件必须只暴露模块公共变量/类型/函数
+- 在头文件中对全局模块变量使用`extern`，稍后在源文件中定义它们
 ```
 /* file.h ... */
 #ifndef ...
 
-extern int32_t my_variable; /* This is global variable declaration in header */
+extern int32_t my_variable; /* 这是头文件中的全局变量声明 */
 
 #endif
 
 /* file.c ... */
-int32_t my_variable;        /* Actually defined in source */
+int32_t my_variable;        /* 实际上在源文件中定义 */
 ```
-- Never include `.c` files in another `.c` file
-- `.c` file should first include corresponding `.h` file, later others, unless otherwise explicitly necessary
-- Do not include module private declarations in header file
+- 永远不要在另一个`.c`文件中包含`.c`文件
+- `.c`文件应该首先包含相应的`.h`文件，然后是其他文件，除非明确必要
+- 不要在头文件中包含模块私有声明
 
-- Header file example (no license for sake of an example)
+- 头文件示例（为了示例而省略许可证）
 ```c
-/* License comes here */
+/* 许可证在这里 */
 #ifndef TEMPLATE_HDR_H
 #define TEMPLATE_HDR_H
 
-/* Include headers */
+/* 包含头文件 */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/* File content here */
+/* 文件内容在这里 */
 
 #ifdef __cplusplus
 }
@@ -1259,31 +1256,29 @@ extern "C" {
 #endif /* TEMPLATE_HDR_H */
 ```
 
-## Clang format integration
+## Clang格式集成
 
-Repository comes with always-up-to-date `.clang-format` file, an input configuration
-for `clang-format` tool. It can be seamlessly integrated with most of latest techno
-IDEs, including VSCode. Formatting then happens on the spot on each file save.
+存储库带有始终最新的`.clang-format`文件，这是`clang-format`工具的输入配置。它可以与大多数最新技术IDE无缝集成，包括VSCode。然后在每次文件保存时即时进行格式化。
 
 https://code.visualstudio.com/docs/cpp/cpp-ide#_code-formatting
 
-## Artistic style configuration
+## 艺术风格配置
 
-[AStyle](http://astyle.sourceforge.net/) is a great piece of software that can
-help with formatting the code based on input configuration.
+[AStyle](http://astyle.sourceforge.net/)是一个很棒的软件，可以基于输入配置帮助格式化代码。
 
-This repository contains `astyle-code-format.cfg` file which can be used with `AStyle` software.
+此存储库包含`astyle-code-format.cfg`文件，可以与`AStyle`软件一起使用。
 
 ```
 astyle --options="astyle-code-format.cfg" "input_path/*.c,*.h" "input_path2/*.c,*.h"
 ```
 
-> Artistic style configuration is obsolete and no longer updated
+> 艺术风格配置已过时，不再更新
 
-## Eclipse formatter
+## Eclipse格式化器
 
-Repository contains `eclipse-ext-kr-format.xml` file that can be used with
-eclipse-based toolchains to set formatter options.
+存储库包含`eclipse-ext-kr-format.xml`文件，可以与基于eclipse的工具链一起使用来设置格式化器选项。
 
-It is based on K&R formatter with modifications to respect above rules.
-You can import it within eclipse settings, `Preferences -> LANGUAGE -> Code Style -> Formatter` tab.
+它基于K&R格式化器，并修改以遵守上述规则。
+您可以在eclipse设置中导入它，`Preferences -> LANGUAGE -> Code Style -> Formatter`标签。
+
+```
